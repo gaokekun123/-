@@ -1,0 +1,66 @@
+/*
+	基于size的并查级优化
+		在进行和并操作的时候我们会发现合并的两个元素总是前一个指向后一个元素，但这样的运算时间可能会大大增加，因为当前一个元素的层数
+		较大时合并操作会将更多的数据链的根接到另一个根上，这样也就会使树的层数更多，从而使得查找效率变低。如果我们能判断哪一个串的元素
+		更少并将较少的元素的根的父节点链接到较多的跟上这样一来就减少了树的层数，在本次的优化过程中我们利用size的变动来有选择的合并，
+		从而降低了数据处理速度。
+
+		但是依靠元素的多少来判断并不是最好的条件
+*/
+
+
+#include<iostream>
+#include<cassert>
+
+using namespace std;
+namespace UF2{
+	class UnionFind3{
+		private :
+			int * parent;
+			int * sz[];
+			int count;
+
+		public :
+			QuickUnion( int count ){
+				parent = new int[count];
+				sz = new int [count];
+				this -> count = count;
+				for( int i = 0 ; i < count ; i++)
+					parent[i] = i;
+					sz[i] = 1;//因为刚开始每个节点都是一个元素，所以sz的值都为1
+			}
+
+			~QuickUnion(){
+				delete[] parent;
+				delete[] sz;
+ 			}
+ 			int find( int p ){
+ 				assert( p >= 0 && p< count );
+ 				while ( p != parent[p] )
+ 					p = parent[p];
+ 				return p;
+ 			}
+ 			bool idConnected( int p , int q ){
+ 				return find[p] == find[q];
+ 			}
+ 			void unionElement( int p , int q ){
+ 				pRoot = find[p];
+ 				qRoot = find[q];
+
+ 				if( pRoot == qRoot )
+ 					return ;
+
+ 				if( sz[pRoot] > sz[qRoot] ){
+ 					parent[qRoot] = pRoot;
+ 					sz[pRoot] += sz[qRoot];
+ 				}else
+ 				{
+ 					parent [pRoot] = qRoot;
+ 					sz[qRoot] += sz[qRoot];
+ 				}
+ 				
+ 			}
+
+
+	}
+}

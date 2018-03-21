@@ -1,0 +1,72 @@
+
+private:
+    // 树中的节点为私有的结构体, 外界不需要了解二分搜索树节点的具体实现
+    struct Node{
+        Key key;
+        Value value;
+        Node *left;
+        Node *right;
+  
+        Node(Key key, Value value){
+            this->key = key;
+            this->value = value;
+            this->left = this->right = NULL;
+        }
+        Node( Node * node ){
+            this -> key = key;
+            this ->value = value;
+            this ->right = right;
+            this -> left = left;
+        }
+
+    };
+
+
+ //删除键值为key的节点，将结果返回为root
+        void remove(Key key){
+            root = remove(root,key);
+        }
+ //删除以node为根的二叉树的键值为key的节点，并返回删除后的根节点
+    Node * remove( Node * node , Key key ){
+        if( node == NULL )
+            return NULL;
+
+        if( key > node->key )  //大于的情况
+            node->right = remove( node-> right , key );
+        else    if( key < node -> left )//小于的情况
+            return node ->left = remove( node->left , key );
+        else//刚好等于的情况
+        {   //如果node的左右孩子都为空那么函数进入这里，因为node的左孩子也为NULL，所以返回值也为空，所以不影响 
+            if( node -> left == NULL ){//要删除的节点的左孩子的节点为空时
+                Node * rightNode = node ->right;
+                delete node;
+                count--;
+                return rightNode; 
+            } 
+
+            if( node -> right == NULL ){//要删除的节点的右孩子的节点为空时
+                Node * leftNode = node -> left;
+                delete node;
+                count--;
+                return leftNode;
+            }
+
+            Node * delNode = node;
+            //由于在下面的removeMin中将node删除了，所以在这里我们复制一下node右子树中的最小节点
+            Node * successor = new Node( minmum( node -> right ) );
+            count++;
+            //这里将node右子树的最小节点删掉，并且返回node的右子树的根也就是node->right
+            successor -> right = removeMin( node -> right );
+            successor -> left = node -> left;
+
+            delete delNode;
+            count--;
+
+            return successor; 
+
+
+        }
+
+
+
+    } 
